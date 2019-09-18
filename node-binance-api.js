@@ -8,10 +8,12 @@
 
 /**
  * Node Binance API
+ *
+ * @param isFuturesApi
  * @module jaggedsoft/node-binance-api
  * @return {object} instance to class object
  */
-let api = function Binance() {
+let api = function Binance(isFutures) {
     let Binance = this; // eslint-disable-line consistent-this
     'use strict'; // eslint-disable-line no-unused-expressions
 
@@ -24,10 +26,19 @@ let api = function Binance() {
     const SocksProxyAgent = require('socks-proxy-agent');
     const stringHash = require('string-hash');
     const async = require('async');
-    const base = 'https://api.binance.com/api/';
-    const wapi = 'https://api.binance.com/wapi/';
-    const stream = 'wss://stream.binance.com:9443/ws/';
-    const combineStream = 'wss://stream.binance.com:9443/stream?streams=';
+    
+    if(isFuturesApi) {
+        const base = 'https://fapi.binance.com/fapi/';
+        const wapi = 'https://fapi.binance.com/wapi/';
+        const stream = 'wss://fstream.binance.com/ws/';
+        const combineStream = 'wss://fstream.binance.com/stream?streams=';
+    } else {
+        const base = 'https://api.binance.com/api/';
+        const wapi = 'https://api.binance.com/wapi/';
+        const stream = 'wss://stream.binance.com:9443/ws/';
+        const combineStream = 'wss://stream.binance.com:9443/stream?streams=';
+    }
+    
     const userAgent = 'Mozilla/4.0 (compatible; Node Binance API)';
     const contentType = 'application/x-www-form-urlencoded';
     Binance.subscriptions = {};
